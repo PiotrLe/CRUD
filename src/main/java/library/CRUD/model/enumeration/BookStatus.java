@@ -9,14 +9,14 @@ import static java.util.Arrays.stream;
 
 public enum BookStatus {
 
-    ACTIVE("active"),
-    CANCELLED("cancelled"),
-    ARCHIVED("archived"),
-    LOAN("loan"),
-    INVALID("invalid"),
-    COMPLETED("completed");
+    ACTIVE("ACTIVE"),
+    CANCELLED("CANCELLED"),
+    ARCHIVED("ARCHIVED"),
+    LOAN("LOAN"),
+    INVALID("INVALID"),
+    COMPLETED("COMPLETED");
 
-    public static final String ALLOWABLE_VALUES = "active, cancelled, archived, loan, invalid,  completed";
+    public static final String ALLOWABLE_VALUES = "ACTIVE, CANCELLED, ARCHIVED, LOAN, INVALID,  COMPLETED";
 
     protected String restValue;
 

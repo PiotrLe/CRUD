@@ -2,6 +2,7 @@ package library.CRUD.service;
 
 import javassist.NotFoundException;
 import library.CRUD.model.Book;
+import library.CRUD.model.enumeration.BookStatus;
 import library.CRUD.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,21 @@ public class BookService {
 //                .findOne(book.id.eq(id))
 //                .orElseThrow(() -> new NotFoundException("Unexisting book id: " + id));
 //    }
+
+    public Book updateBookStatus(String id, BookStatus bookStatus, Book newBook) throws NotFoundException {
+        if (id != null && bookStatus != null && newBook!=null) {
+            Book book = getBook(id);
+            if(bookStatus == BookStatus.LOAN){
+                book.setCustomer(newBook.getCustomer());
+            }
+            if(bookStatus == BookStatus.ACTIVE){
+                book.setCustomer(null);
+            }
+            book.setStatus(bookStatus);
+            return bookRepository.save(book);
+        }
+        return null;
+    }
 
     public Book updateBook(String id, Book updateBook) throws NotFoundException {
         if (id != null && updateBook != null) {

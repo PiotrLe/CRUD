@@ -111,7 +111,7 @@ public class BookControllerApi {
             produces = APPLICATION_JSON_UTF8_VALUE,
             consumes = APPLICATION_JSON_UTF8_VALUE,
             method = PATCH)
-    public ResponseEntity<Book> patchShoppingCart(
+    public ResponseEntity<Book> patchBook(
             @PathVariable(BOOK_PATH_VARIABLE)
                     String id,
             @Valid
@@ -120,6 +120,30 @@ public class BookControllerApi {
     ) throws ServletException, NotFoundException {
         try {
             Book updatedCart = bookService.updateBook(id, newBook);
+
+            return ok().cacheControl(noCache()).body(updatedCart);
+
+        } catch (Exception e) {
+            log.error("Order patching error.", e);
+            throw e;
+        }
+    }
+
+    @RequestMapping(value = LIBRARY_PATH + "{" + BOOK_PATH_VARIABLE + "}" + "/status/{status}",
+            produces = APPLICATION_JSON_UTF8_VALUE,
+            consumes = APPLICATION_JSON_UTF8_VALUE,
+            method = PATCH)
+    public ResponseEntity<Book> patchBookStatus(
+            @PathVariable(BOOK_PATH_VARIABLE)
+                    String id,
+            @RequestParam(value = "status")
+                    BookStatus bookStatus,
+            @Valid
+            @RequestBody
+                    Book newBook
+    ) throws ServletException, NotFoundException {
+        try {
+            Book updatedCart = bookService.updateBookStatus(id, bookStatus,newBook);
 
             return ok().cacheControl(noCache()).body(updatedCart);
 
