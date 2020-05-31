@@ -48,11 +48,12 @@ public class BookService {
         }
     }
 
-//              bookRepository
-//                .findOne(book.id.eq(id))
-//                .orElseThrow(() -> new NotFoundException("Unexisting book id: " + id));
-//    }
+    @Transactional
+    public void deleteBook(String id){
+        bookRepository.deleteById(id);
+    }
 
+    @Transactional
     public Book updateBookStatus(String id, BookStatus bookStatus, Book newBook) throws NotFoundException {
         if (id != null && bookStatus != null && newBook!=null) {
             Book book = getBook(id);
@@ -68,6 +69,7 @@ public class BookService {
         return null;
     }
 
+    @Transactional
     public Book updateBook(String id, Book updateBook) throws NotFoundException {
         if (id != null && updateBook != null) {
             Book book = getBook(id);

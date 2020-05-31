@@ -24,8 +24,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.ResponseEntity.ok;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Slf4j
 @RestController
@@ -60,20 +59,6 @@ public class BookControllerApi {
             throw e;
         }
     }
-
-
-
-
-//    @GetMapping("book/{id}")
-//    public Book getBook(@PathVariable String id){
-//        return bookService.getBook(id);
-//    }
-
-//    @PostMapping("book/")
-//    public Book addBook(Book book){
-//        return bookService.saveBook(book);
-//    }
-
 
     @RequestMapping(value = LIBRARY_PATH,
             produces = APPLICATION_JSON_UTF8_VALUE,
@@ -151,6 +136,24 @@ public class BookControllerApi {
             log.error("Order patching error.", e);
             throw e;
         }
+    }
+
+    @RequestMapping(value = LIBRARY_PATH + "{" + BOOK_PATH_VARIABLE + "}",
+            produces = APPLICATION_JSON_UTF8_VALUE,
+            consumes = {APPLICATION_JSON_UTF8_VALUE, "*"},
+            method = DELETE)
+    public ResponseEntity<Void> deleteBook(
+            @PathVariable(BOOK_PATH_VARIABLE)
+                    String id
+    ) throws Exception {
+        try {
+            bookService.deleteBook(id);
+        } catch (Exception e) {
+            log.warn("delete cart by ID (" + id + "): " + e.getMessage());
+            //throw new NoHandlerFoundException(request.getMethod(), request.getRequestURL().toString(), getHeadersFromRequest(request));
+            throw e;
+        }
+        return ResponseEntity.noContent().cacheControl(noCache()).build();
     }
 
     @Operation(description = "Retrieves a 'Book' by Id",
